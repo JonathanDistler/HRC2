@@ -1,3 +1,4 @@
+
 #Goal of this code is to take the output of a PDDL and convert that to an action in the Stretch Robot's Action space
 #Need to map verb to action
 
@@ -93,6 +94,20 @@ def verb_map(arr):
         delta_height=height_final-height_current
         arm_up(delta_height+.05) #moves the arm up a specific distance
         print(f"load from {height_current} to {height_final}")
+
+###Double Check Method###
+#assume everything is orthogonal, this will keep the center of the robot along the same axis after a turn
+offset_distance=0.05715; #measured empirically for a 90 degree turn, had been using .05 m 
+def turn_interp(angle):
+    if angle!=90: 
+        angle=angle%90 #in the case angle is 180 degrees
+
+    distance=0+(offset_distance/90)*(angle) #from interpolation formula, gives how much the base needs to move to counteract center of mass offset
+    #turns the base by the "angle" amount degrees CCW
+    base_rotate(angle)
+    #moves the base forward by the amount at which the center of mass if offset
+    base_move(distance)
+
 
 
 
